@@ -1,0 +1,33 @@
+{
+  "name": "aeo-geo-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-tenant AEO/GEO platform foundation",
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "pnpm db:generate && turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "pnpm db:generate && turbo run typecheck",
+    "test": "pnpm db:generate && turbo run test",
+    "validate": "pnpm db:generate && turbo run lint typecheck test build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "pnpm --filter @aeo/db generate",
+    "db:validate": "pnpm --filter @aeo/db validate",
+    "db:check": "pnpm --filter @aeo/db check",
+    "db:migrate:status": "pnpm --filter @aeo/db migrate:status",
+    "db:migrate:deploy": "pnpm --filter @aeo/db migrate:deploy"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
+    "turbo": "2.11.9",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2"
+  }
+}
