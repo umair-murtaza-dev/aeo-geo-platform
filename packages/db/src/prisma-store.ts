@@ -86,33 +86,39 @@ export function createPrismaStore(prisma: PrismaClient): AuthStore {
       return user ? toPublicUser(user) : null;
     },
     async createOrganization(input) {
-      try {
-        const created = await prisma.$transaction(async (tx) => {
-          const organization = await tx.organization.create({
-            data: { name: input.name, slug: input.slug, kind: input.kind },
-          });
-          await tx.organizationMembership.create({
-            data: { organizationId: organization.id, userId: input.ownerUserId, role: 'OWNER' },
-          });
-          await tx.clientWorkspace.create({
-            data: {
-              organizationId: organization.id,
-              name: organization.name,
-              slug: organization.slug,
-            },
-          });
-          await tx.auditLog.create({
-            data: {
-              organizationId: organization.id,
-              actorUserId: input.ownerUserId,
-              action: 'organization.created',
-              entityType: 'Organization',
-              entityId: organization.id,
-              metadata: { slug: organization.slug },
-            },
-          });
-          return organization;
+      const create = async (tx: Prisma.TransactionClient) => {
+        const organization = await tx.organization.create({
+          data: { name: input.name, slug: input.slug, kind: input.kind },
         });
+        await tx.organizationMembership.create({
+          data: { organizationId: organization.id, userId: input.ownerUserId, role: 'OWNER' },
+        });
+        await tx.clientWorkspace.create({
+          data: {
+            organizationId: organization.id,
+            name: organization.name,
+            slug: organization.slug,
+          },
+        });
+        await tx.auditLog.create({
+          data: {
+            organizationId: organization.id,
+            actorUserId: input.ownerUserId,
+            action: 'organization.created',
+            entityType: 'Organization',
+            entityId: organization.id,
+            metadata: { slug: organization.slug },
+          },
+        });
+        return organization;
+      };
+      try {
+        // Interactive transaction clients do not expose $transaction. Reuse the
+        // current client when the store is already inside an outer transaction.
+        const created =
+          typeof prisma.$transaction === 'function'
+            ? await prisma.$transaction(create)
+            : await create(prisma as unknown as Prisma.TransactionClient);
         return { ...toOrganization(created), role: 'OWNER' as const };
       } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

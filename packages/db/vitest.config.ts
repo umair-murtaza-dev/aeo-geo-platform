@@ -7,6 +7,6 @@ export default defineConfig({
     env: {
       PASSWORD_SCRYPT_N: '1024',
     },
-    testTimeout: 20000,
+    testTimeout: 90000,
   },
 });

@@ -20,6 +20,7 @@
     "test": "vitest run",
     "build": "tsc --noEmit",
     "check": "tsx src/check-connection.ts",
+    "verify:constraints": "tsx src/verify-constraints.ts",
     "migrate:diff": "prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script"
   },
   "dependencies": {
