@@ -34,7 +34,7 @@
 
 ## Safety
 
-Do not reset, drop, or truncate a database that already has tables you did not create. The initial migration is `packages/db/prisma/migrations/20261018120000_init`. Apply it with `prisma migrate deploy` only on an approved empty database.
+Do not reset, drop, or truncate a database that already has tables you did not create. The initial migration is `packages/db/prisma/migrations/20261018120000_init`. Apply it with `pnpm db:migrate:deploy` only on an approved empty database. That command loads the root `.env`, uses `DIRECT_URL`, and refuses a pooled host.
 
 Additional SQL in that migration, which Prisma's schema language does not express directly:
 

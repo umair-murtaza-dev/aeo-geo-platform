@@ -24,7 +24,7 @@ pnpm db:check
 Apply the migration only after `db:check` shows an empty database that you own:
 
 ```bash
-pnpm --filter @aeo/db exec prisma migrate deploy
+pnpm db:migrate:deploy
 ```
 
 Do not run `prisma migrate reset` against a shared or unknown database.

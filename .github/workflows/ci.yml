@@ -52,7 +52,7 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate
       - name: Apply migrations to the disposable CI database
-        run: pnpm --filter @aeo/db exec prisma migrate deploy
+        run: pnpm db:migrate:deploy
       - name: Validate
         run: pnpm validate
       - name: Install Playwright browser

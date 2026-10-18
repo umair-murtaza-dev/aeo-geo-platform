@@ -1,6 +1,7 @@
 // Canonical schema for the AEO/GEO platform.
 // Connections: DATABASE_URL is the pooled Neon URL used at runtime.
 // DIRECT_URL is the direct Neon URL used by Prisma migrations.
+// Prisma 6.19.3 does not support channel_binding. Application code removes it.
 // Do not store provider secrets or password plaintext in these tables.
 
 generator client {

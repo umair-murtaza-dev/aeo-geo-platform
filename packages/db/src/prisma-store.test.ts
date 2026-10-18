@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { afterAll, describe, expect, it } from 'vitest';
+import { configureDatabaseEnv } from './database-url';
 import { createPrismaStore } from './prisma-store';
 
+configureDatabaseEnv();
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 const rollback = new Error('ROLLBACK_TEST');
 
@@ -50,6 +52,18 @@ describe('prisma store', () => {
             role: 'OWNER',
           });
           expect(await store.listWorkspaces(organization.id)).toHaveLength(1);
+          expect(await store.verifyLogin(user.email, 'correct-horse-battery')).toMatchObject({
+            id: user.id,
+          });
+          expect(await store.verifyLogin(user.email, 'wrong-password-value')).toBeNull();
+
+          const outsider = await store.createUser({
+            email: `outsider-${crypto.randomUUID()}@example.com`,
+            password: 'correct-horse-battery',
+            name: 'Outsider',
+          });
+          expect(await store.getOrganizationForUser(outsider.id, organization.id)).toBeNull();
+          expect(await store.listMemberships(outsider.id)).toEqual([]);
           throw rollback;
         });
       } catch (error) {

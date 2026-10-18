@@ -17,9 +17,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:generate": "pnpm --filter @aeo/db generate",
-    "db:validate": "pnpm --filter @aeo/db exec prisma validate",
+    "db:validate": "pnpm --filter @aeo/db validate",
     "db:check": "pnpm --filter @aeo/db check",
-    "db:migrate:status": "pnpm --filter @aeo/db exec prisma migrate status"
+    "db:migrate:status": "pnpm --filter @aeo/db migrate:status",
+    "db:migrate:deploy": "pnpm --filter @aeo/db migrate:deploy"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

@@ -11,7 +11,10 @@
     }
   },
   "scripts": {
-    "generate": "prisma generate",
+    "generate": "tsx src/run-prisma.ts generate",
+    "validate": "tsx src/run-prisma.ts validate",
+    "migrate:status": "tsx src/run-prisma.ts migrate status",
+    "migrate:deploy": "tsx src/run-prisma.ts migrate deploy",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
